@@ -9,8 +9,12 @@ export-env {
 
     def get-shells [] {
         shells | enumerate | each {|shell|
-            let color = if $shell.item.active { "green" } else { "default_dimmed" }
-            $"(ansi $color)($shell.index)(ansi reset)"
+            let color = if $shell.item.active {
+                {fg: "green" attr: "bu"}
+            } else {
+                {fg: "default" attr: "d"}
+            }
+            $"(ansi -e $color)($shell.index)(ansi reset)"
         } | str join " "
     }
 
@@ -24,15 +28,15 @@ export-env {
         | enumerate
         | each {|overlay|
             let color = if $overlay.index == 0 {
-                "green"
+                {fg: "green" attr: "bu"}
             } else if $overlay.index == (($overlays | length) - 1) {
-                "default_dimmed"
+                {fg: "default" attr: "d"}
             } else {
-                "cyan"
+                {fg: "cyan"}
             }
 
             [
-                (ansi $color)
+                (ansi -e $color)
                 ($overlay.item | if ($env.PROMPT_CONFIG?.compact? | default false) {
                     split chars | first
                 } else {})
