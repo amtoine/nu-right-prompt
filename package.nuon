@@ -1,0 +1,5 @@
+{
+    name: "nu-right-prompt"
+    version: 0.1.0
+    description: "A package to setup the right prompt of Nushell."
+}
