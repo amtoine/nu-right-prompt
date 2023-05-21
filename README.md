@@ -9,7 +9,7 @@ A package to setup the right prompt of Nushell.
 ```nu
 let-env PROMPT_CONFIG = {
     compact: false            # whether to make the prompt compact or not
-    section_separator: ' | '  # the separator between sections
+    section_separator: " | "  # the separator between sections
     overlay_separator: " < "  # the separator between overlays
 }
 ```
