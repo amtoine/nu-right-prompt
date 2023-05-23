@@ -45,12 +45,22 @@ export-env {
         } | str join ($env.PROMPT_CONFIG?.overlay_separator? | default ' < ' | separator)
     }
 
+    $env.PROMPT_CONFIG.sections? | default ["shells", "overlays"] | each {|section|
+        match $section {
+            "shells" | "overlays" => {},
+            _ => {
+                error make --unspanned {
+                    msg: $"(ansi red_bold)unknown section(ansi reset) ($'"($section)"' | nu-highlight) in ('$env.PROMPT_CONFIG.sections' | nu-highlight)"
+                }
+            }
+        }
+    }
+
     let-env PROMPT_COMMAND_RIGHT = {
         $env.PROMPT_CONFIG.sections? | default ["shells", "overlays"] | each {|section|
             match $section {
                 "shells" => { get-shells },
                 "overlays" => { get-overlays },
-                _ => { print $"unkown section ($section)" },
             }
         } | str join ($env.PROMPT_CONFIG?.section_separator? | default ' | ' | separator)
     }
