@@ -45,7 +45,7 @@ export-env {
         } | str join ($env.NU_RIGHT_PROMPT_CONFIG?.overlay_separator? | default ' < ' | separator)
     }
 
-    $env.NU_RIGHT_PROMPT_CONFIG.sections? | default ["shells", "overlays"] | each {|section|
+    $env.NU_RIGHT_PROMPT_CONFIG?.sections? | default ["shells", "overlays"] | each {|section|
         match $section {
             "shells" | "overlays" => {},
             _ => {
@@ -57,7 +57,7 @@ export-env {
     }
 
     let-env PROMPT_COMMAND_RIGHT = {
-        $env.NU_RIGHT_PROMPT_CONFIG.sections? | default ["shells", "overlays"] | each {|section|
+        $env.NU_RIGHT_PROMPT_CONFIG?.sections? | default ["shells", "overlays"] | each {|section|
             match $section {
                 "shells" => { get-shells },
                 "overlays" => { get-overlays },
