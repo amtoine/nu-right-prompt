@@ -46,6 +46,12 @@ export-env {
     }
 
     let-env PROMPT_COMMAND_RIGHT = {
-        (get-shells) ++ ($env.PROMPT_CONFIG?.section_separator? | default ' | ' | separator) ++ (get-overlays)
+        $env.PROMPT_CONFIG.sections? | default ["shells", "overlays"] | each {|section|
+            match $section {
+                "shells" => { get-shells },
+                "overlays" => { get-overlays },
+                _ => { print $"unkown section ($section)" },
+            }
+        } | str join ($env.PROMPT_CONFIG?.section_separator? | default ' | ' | separator)
     }
 }
