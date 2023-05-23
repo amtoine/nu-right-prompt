@@ -37,31 +37,31 @@ export-env {
 
             [
                 (ansi -e $color)
-                ($overlay.item | if ($env.PROMPT_CONFIG?.compact? | default false) {
+                ($overlay.item | if ($env.NU_RIGHT_PROMPT_CONFIG?.compact? | default false) {
                     split chars | first
                 } else {})
                 (ansi reset)
             ] | str join ""
-        } | str join ($env.PROMPT_CONFIG?.overlay_separator? | default ' < ' | separator)
+        } | str join ($env.NU_RIGHT_PROMPT_CONFIG?.overlay_separator? | default ' < ' | separator)
     }
 
-    $env.PROMPT_CONFIG.sections? | default ["shells", "overlays"] | each {|section|
+    $env.NU_RIGHT_PROMPT_CONFIG.sections? | default ["shells", "overlays"] | each {|section|
         match $section {
             "shells" | "overlays" => {},
             _ => {
                 error make --unspanned {
-                    msg: $"(ansi red_bold)unknown section(ansi reset) ($'"($section)"' | nu-highlight) in ('$env.PROMPT_CONFIG.sections' | nu-highlight)"
+                    msg: $"(ansi red_bold)unknown section(ansi reset) ($'"($section)"' | nu-highlight) in ('$env.NU_RIGHT_PROMPT_CONFIG.sections' | nu-highlight)"
                 }
             }
         }
     }
 
     let-env PROMPT_COMMAND_RIGHT = {
-        $env.PROMPT_CONFIG.sections? | default ["shells", "overlays"] | each {|section|
+        $env.NU_RIGHT_PROMPT_CONFIG.sections? | default ["shells", "overlays"] | each {|section|
             match $section {
                 "shells" => { get-shells },
                 "overlays" => { get-overlays },
             }
-        } | str join ($env.PROMPT_CONFIG?.section_separator? | default ' | ' | separator)
+        } | str join ($env.NU_RIGHT_PROMPT_CONFIG?.section_separator? | default ' | ' | separator)
     }
 }
